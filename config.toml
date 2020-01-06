@@ -29,7 +29,7 @@ paginate = 10 #frontpage pagination
   author = "练法术的兔子"
   authorLink = "https://xnray.github.io/"
   bio = [
-    "一个会算卦的程序员 <a href='https://xnray.github.io/'>Appernetic.io</a>. "
+    "一个会算卦的程序员 <a href='https://xnray.github.io/'>xnray</a>. "
   ]
   copyright = [
     "&copy; 2020 kong kong",

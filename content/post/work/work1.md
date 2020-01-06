@@ -1,33 +1,69 @@
+
 +++
 showonlyimage = false
 draft = false
 #image = "img/portfolio/a4-paper.jpg"
-date = "2020-01-5T18:25:22+05:30"
-title = "Name of the work 1"
+date = "2020-01-6T18:25:22+05:30"
+title = "将hugo生成的页面托管到github pages"
 writer = "练法术的兔子"
-categories = [ "golang"]
+categories = [ "web"]
 weight = 1
 +++
 
-Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life. One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.
-<!--more-->
+## GitHub User or Organization Pages
 
-Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.
+1.   Create a `<YOUR-PROJECT>` (e.g. `blog`) repository on GitHub. This repository will contain Hugo's content and other source files.
+2.   Create a `<USERNAME>.github.io` GitHub repository. This is the repository that will contain the fully rendered version of your Hugo website.
+3.   `git clone <YOUR-PROJECT-URL> && cd <YOUR-PROJECT>`
+4.   Paste your existing Hugo project into a new local `<YOUR-PROJECT>` repository. Make sure your website works locally (`hugo server` or `hugo server -t <YOURTHEME>`) and open your browser to [http://localhost:1313](http://localhost:1313).
+5.   Once you are happy with the results:
+    *   Press Ctrl+C to kill the server
+    *   Before proceeding run `rm -rf public` to completely remove the `public` directory
+6.   `git submodule add -b master git@github.com:<USERNAME>/<USERNAME>.github.io.git public`. This creates a git [submodule](https://github.com/blog/2104-working-with-submodules). Now when you run the `hugo` command to build your site to `public`, the created `public` directory will have a different remote origin (i.e. hosted GitHub repository).
 
-A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.
+## Put it Into a Script
 
-1. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-2. Aliquam tincidunt mauris eu risus.
+You're almost done. In order to automate next steps create a `deploy.sh`script. You can also make it executable with `chmod +x deploy.sh`.
 
-> The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn't listen. She packed her seven versalia, put her initial into the belt and made herself on the way.
+The following are the contents of the `deploy.sh` script:
+```
+#!/bin/sh
 
-## Header Level 2
+# If a command fails then the deploy stops
+set -e
 
-Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.
+printf "\033[0;32mDeploying updates to GitHub...\033[0m\n"
 
-The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn't listen. She packed her seven versalia, put her initial into the belt and made herself on the way.
+# Build the project.
+hugo # if using a theme, replace with `hugo -t <YOURTHEME>`
 
-* Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-* Aliquam tincidunt mauris eu risus.
+# Go To Public folder
+cd public
 
-When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then  
+# Add changes to git.
+git add .
+
+# Commit changes.
+msg="rebuilding site $(date)"
+if [ -n "$*" ]; then
+	msg="$*"
+fi
+git commit -m "$msg"
+
+# Push source and build repos.
+git push origin master
+```
+You can then run ./deploy.sh "Your optional commit message" to send changes to <USERNAME>.github.io. Note that you likely will want to commit changes to your <YOUR-PROJECT> repository as well.
+
+That's it! Your personal page should be up and running at https://<USERNAME>.github.io within a couple minutes.
+
+## Add .nojekyll to public dirctory
+- GitHub Pages will use Jekyll to build your site by default. If you want to use a static site generator other than Jekyll, disable the Jekyll build process by creating an empty file called .nojekyll in the root of your publishing source, then follow your static site generator's instructions to build your site locally.
+
+
+   
+
+   
+
+   
+
