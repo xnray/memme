@@ -2,10 +2,10 @@
 showonlyimage = false
 draft = false
 #image = "img/portfolio/a4-paper.jpg"
-date = "2020-01-6T18:25:22+05:30"
-title = "将hugo生成的页面托管到github pages"
+date = "2020-01-08-18:00:00"
+title = "六爻 | 装世应 1"
 writer = "练法术的兔子"
-categories = [ "web"]
+categories = [ "sixyao"]
 weight = 1
 +++
 
