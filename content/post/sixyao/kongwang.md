@@ -1,6 +1,6 @@
 +++
 categories = ["sixyao"]
-date = 2020-01-10T00:00:00Z
+date = 2020-01-09T16:00:00Z
 showonlyimage = false
 title = "六爻 | 查空亡 5"
 weight = 1
